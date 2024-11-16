@@ -1,0 +1,29 @@
+def isValidSudoku(self, board: List[List[str]]) -> bool:
+    # horizontal, vertical, and 3x3 box checks
+    # can use list of sets for each row and column, and every 3x3 grid 
+    r_list = [set() for _ in board]
+    c_list = [set() for _ in board]
+    g_list = [set() for _ in board]
+
+    for row in range(len(board)):
+        for col in range(len(board)):
+            cell = board[row][col]
+            if cell == ".":
+                continue
+            # check if duplicate in single row
+            if cell in r_list[row]:
+                return False
+            r_list[row].add(cell)
+
+            # check if duploicate in single col
+            if cell in c_list[col]:
+                return False
+            c_list[col].add(cell)
+
+            # check 3x3 subgrid:
+            grid_index = (row //3) * 3 + (col //3)
+            if cell in g_list[grid_index]:
+                return False
+            g_list[grid_index].add(cell)
+    
+    return True
