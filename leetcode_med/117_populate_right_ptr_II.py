@@ -31,3 +31,24 @@ class Solution:
                     level_list.append(cur_node.right)
                 num_nodes -= 1
         return root
+        
+        # optimized solution using O(1) space, don't need to construct queue, just need to link nodes together
+        # use a current and next pointer, next pointer point to the next level
+        if not root:
+            return None
+        
+        cur_node = root
+        while cur_node:
+            dummy = Node(0)
+            temp = dummy
+            # traverse all the nodes on the same level
+            while cur_node:
+                if cur_node.left:
+                    temp.next = cur_node.left
+                    temp = temp.next
+                if cur_node.right:
+                    temp.next = cur_node.right
+                    temp = temp.next
+                cur_node = cur_node.next
+            cur_node = dummy.next
+        return root
