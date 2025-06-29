@@ -1,8 +1,5 @@
 class Solution:
     def connect(self, root: Optional[TreeNode]) -> None:
-        """
-        Do not return anything, modify root in-place instead.
-        """
         # use a BFS traversal but we don't have to construct a queue, just need to traverse level by level and 
         # connect children together, stop when we don't have children to connect 
         # keep in mind that this is not a perfect tree, there will be missing nodes
