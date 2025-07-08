@@ -48,3 +48,22 @@ class Solution:
 
         recursion(head)
         return path_nodes
+
+    # optimized approach, we know that if a root is an LCA of p and q, both p and q must be included in subpaths
+        # going from root to the leaf nodes either in left or right child or both, when a root returns non-null, 
+        # we know it either contains both p and q or 1 of them, so can then search the other child 
+        if not root:
+            return None
+        if root.val == p.val or root.val == q.val:
+            return root
+        left_tree = self.lowestCommonAncestor(root.left, p, q)
+        right_tree = self.lowestCommonAncestor(root.right, p, q)
+        if left_tree and right_tree:
+            return root
+        elif left_tree:
+            return left_tree
+        else:
+            return right_tree
+        
+        if left_tree and right_tree:
+            return root
