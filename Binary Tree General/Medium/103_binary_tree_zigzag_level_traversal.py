@@ -27,3 +27,5 @@ class Solution:
             res.append(level)
         
         return res
+
+# try using traversal approach
