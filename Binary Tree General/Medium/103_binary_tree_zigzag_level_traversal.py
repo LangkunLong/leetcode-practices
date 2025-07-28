@@ -6,25 +6,34 @@
 #         self.right = right
 class Solution:
     def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
-        # need to use level-order traversal, easy way to just reverse odd level nodes
+        # try solving with correct traversal order
+        # in tree problems, keep in in mind:
+        # traversal order: BFS, maintain the structure of the tree, make sure traversing level by level
+        # output order: in this question zigzag, left to right then right to left
         if not root:
             return []
+        
         queue = collections.deque()
         queue.append(root)
         res = []
+        zigzag = True
         
         while(queue):
-            level = []
+            level = collections.deque() # record from left -> right or right ->left
             for i in range(len(queue)):
                 cur_node = queue.popleft()
-                level.append(cur_node.val)
+                # alternate output order
+                if zigzag:
+                    level.append(cur_node.val)
+                else:
+                    level.appendleft(cur_node.val)
+                # keep bfs traversal order
                 if cur_node.left:
                     queue.append(cur_node.left)
                 if cur_node.right:
                     queue.append(cur_node.right)
-            if len(res) % 2 == 1: # if level is odd, reverse
-                level = list(reversed(level))
-            res.append(level)
+            res.append(list(level))
+            zigzag = not zigzag
         
         return res
 
