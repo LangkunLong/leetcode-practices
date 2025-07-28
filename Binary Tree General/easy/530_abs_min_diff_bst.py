@@ -1,26 +1,22 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 class Solution:
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
-        # find minimum, given a bst, sorted
-        # min difference is (root.right - root), (root - root.left), then traverse left
-        # any traversal works, doing in order
+        # in order traversal, since sorted, we can go to smallest node val first and traverse in incrasing order
+        # dfs approach, same as finding min diff in a sorted array, have prev, next nodes
         if not root:
             return 0
-        min_diff = [float('inf')] # initialize
-        def helper(root):
+        min_diff = [float('inf')]
+        prev = [None]
+
+        def dfs(root):
             if not root:
                 return 
-            if root.left:
-                min_diff[0] = min(min_diff[0], root.val - root.left.val)
-                helper(root.left)
-            if root.right:
-                min_diff[0] = min(min_diff[0], root.right.val - root.val )
-                helper(root.right)
+            dfs(root.left)
+            # can only start comparing at second node onwards
+            if prev[0] is not None:
+                min_diff[0] = min(min_diff[0], root.val - prev[0])
+            prev[0] = root.val
+            
+            dfs(root.right)
         
-        helper(root)
+        dfs(root)
         return min_diff[0]
