@@ -1,54 +1,37 @@
 class Solution:
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
-        from collections import defaultdict, deque, Counter
+        from collections import defaultdict, deque
 
         if endWord not in wordList:
             return 0
         
-        # construct graph using wordlist
+        # construct adj_list using patterns, key is the pattern, value is the words that match with the pattern
         adj_list = defaultdict(list)
+        for word in wordList:
+            for i in range(len(word)):
+                pattern = word[:i] + '*' + word[i+1:]
+                adj_list[pattern].append(word)
+        
+        # bfs traversal
         queue = deque()
         visited = set()
-        queue.append(beginWord)
-        while queue:
-            cur = queue.popleft()
-            visited.add(cur)
-            for word in wordList:
-                if self.validSeq(cur, word) and word not in visited:
-                    adj_list[cur].append(word)
-                    queue.append(word)
-        #print(adj_list)
-        
-        # bfs with priority queue, need to evaluate the 'fastest' transformation
-        queue.clear()
-        visited.clear()
         queue.append((beginWord, 1))
         min_path = float('inf')
         found = False
         while queue:
-            n, w = queue.popleft()
-            visited.add(n)
-            if n == endWord:
-                min_path = min(min_path, w)
-                found = True
-            for seq in adj_list[n]:
-                if seq not in visited:
-                    queue.append((seq, w + 1))
+            word, path = queue.popleft()
+            visited.add(word)
+            if word == endWord:
+                return path
+            for i in range(len(word)):
+                pattern = word[:i] + '*' + word[i+1:]
+                for seq_word in adj_list[pattern]:
+                    if seq_word not in visited:
+                        queue.append((seq_word, path + 1))
         
-        if found:
-            return min_path
-        else:
-            return 0
+        return 0
         
-    
-    # determine if 2 words differ by 1 letter, use frequency counter
-    def validSeq(self, src, dst):
-        diff = 0
-        if src != dst: # prevent repeat cycles in case beginword is in wordlist
-            for x, y in zip(src, dst):
-                if x != y:
-                    diff += 1
-        return diff == 1
+
             
 
     
