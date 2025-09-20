@@ -1,41 +1,46 @@
+class TrieNode:
+    def __init__(self):
+        self.children = dict()
+        self.eow = False
+
 class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
-        # step 1, process board into adj_list, keep track of letter occurrence
-        # step 2, recursive backtracking
-
-        # create adj_list based on neighbors
-        from collections import defaultdict
-        neigh_list = defaultdict(list)
-        word_positions = defaultdict(list)
-        neigh_dir = [(0, 1), (0,-1), (1, 0), (-1, 0)]
+        # step 1, reorganize words into a prefix trie
+        # step 2, at each position on the grid, run recursive dfs to see how many words we can recreate
+        root = TrieNode()
+        for word in words:
+            cur = root
+            for char in word:
+                if char not in cur.children:
+                    cur.children[char] = TrieNode()
+                cur = cur.children[char]
+            cur.eow = True
         
+        # recursive dfs
+        # need to traverse both the trie and the grid, at each position, run dfs
+        neigh_dir = [(0, 1), (0,-1), (1, 0), (-1, 0)]
+        res = set() # can have different paths forming the same word
         for i in range(len(board)):
             for j in range(len(board[i])):
-                for dx, dy in neigh_dir:
-                    if i + dx in range(len(board)) and j + dy in range(len(board[i])):
-                        key_str = board[i][j] + str(i) + str(j) # can reconstruct this given word_positions  
-                        if key_str not in neigh_list:
-                            neigh_list[key_str].append(board[i+dx][j+dy])
-                            word_positions[board[i][j]].append((i,j))
-        #print(neigh_list)
-        #print(word_positions)
-
-        # traverse using backtracking
-        res = []
-        for word in words:
-            target = word
+                visited = set()
+                def dfs(r, c, node, cur_word):
+                    # base case: out of bounds or starting prefix doesn't exist
+                    if r not in range(len(board)) or c not in range(len(board[0])) or (r,c) in visited or board[r][c] not in node.children:
+                        return 
+                    # backtracking: mark as visited in current path, then un-mark it when we return
+                    visited.add((r,c))
+                    cur_word += board[r][c]
+                    node = node.children[board[r][c]]
+                    #print(cur_word)
+                    if node.eow:
+                        res.add(cur_word)
+                    for dx, dy in neigh_dir:
+                        dfs(r+dx, c+dy, node, cur_word)
+                    visited.remove((r,c))
                 
-            def dfs(char, cur_word):
-                # base case:
-                if cur_word == target:
-                    return True
-                for start_pos in word_positions[char]:
-                    key_str = char + str(start_pos[0]) + str(start_pos[1])
-                    for neigh in neigh_list[key_str]:
-                        dfs(neigh, char + neigh)
-            if dfs():
-                res.append(word)
-
+                dfs(i, j, root, "")
+        
+        return list(res)
 
 
 
