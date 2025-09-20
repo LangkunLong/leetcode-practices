@@ -1,3 +1,4 @@
+# still time limit exceeded with the last case, have to try using in-place grid marking to mark as visited?
 class TrieNode:
     def __init__(self):
         self.children = dict()
