@@ -1,4 +1,5 @@
-# still time limit exceeded with the last case, have to try using in-place grid marking to mark as visited?
+# still failing tle after changing to in-grid marking
+
 class TrieNode:
     def __init__(self):
         self.children = dict()
@@ -23,21 +24,23 @@ class Solution:
         res = set() # can have different paths forming the same word
         for i in range(len(board)):
             for j in range(len(board[i])):
-                visited = set()
                 def dfs(r, c, node, cur_word):
                     # base case: out of bounds or starting prefix doesn't exist
-                    if r not in range(len(board)) or c not in range(len(board[0])) or (r,c) in visited or board[r][c] not in node.children:
+                    ch = board[r][c]
+                    if ch not in node.children:
                         return 
                     # backtracking: mark as visited in current path, then un-mark it when we return
-                    visited.add((r,c))
                     cur_word += board[r][c]
                     node = node.children[board[r][c]]
-                    #print(cur_word)
+                    board[r][c] = '#' # mark as visited
+
                     if node.eow:
                         res.add(cur_word)
                     for dx, dy in neigh_dir:
-                        dfs(r+dx, c+dy, node, cur_word)
-                    visited.remove((r,c))
+                        nx, ny = r + dx, c + dy
+                        if nx in range(len(board)) and ny in range(len(board[0])) and board[nx][ny] != '#':          
+                            dfs(r+dx, c+dy, node, cur_word)
+                    board[r][c] = ch
                 
                 dfs(i, j, root, "")
         
