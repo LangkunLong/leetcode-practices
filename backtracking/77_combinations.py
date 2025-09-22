@@ -12,6 +12,8 @@ class Solution:
                 sub_res.append(i)
                 backtrack(i+1, sub_res)
                 sub_res.pop()
+                # or pass in a new list copy, similar to leetcode 17
+                # backtrack(i+1, sub_res + [i])
         
         backtrack(1, [])
         return res
