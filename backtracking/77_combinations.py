@@ -2,17 +2,17 @@ class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
         #define base case
         res = []
-        sub_res = []
 
-        def backtrack(j):
+        def backtrack(start, sub_res):
             
             if len(sub_res) == k:
-                res.append(sub_res)
+                res.append(sub_res.copy())
                 return 
-            for i in range(j, n + 1):
-                backtrack(i+1, sub_res.append(i))
-                sub_res = [] # clear after return 
+            for i in range(start, n + 1):
+                sub_res.append(i)
+                backtrack(i+1, sub_res)
+                sub_res.pop()
         
-        backtrack(1)
+        backtrack(1, [])
         return res
                 
