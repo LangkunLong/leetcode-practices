@@ -1,7 +1,8 @@
 class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
         # use a mapping dictionary for each number to dict
-        # brute force can separate starting digit with the rest of the digits
+        # backtrack to all possible branches, go to next digit + next cur
+        # ALWAYS DEFINE BASE CASE FIRST
         map_dict = {
             '2': 'abc',
             '3': 'def',
@@ -12,22 +13,19 @@ class Solution:
             '8': 'tuv',
             '9': 'wxyz'
         }
-
-        if not digits:
-            return []
-        
-        # separate first digit 
-        first, remain = digits[0], digits[1:]
         res = []
-        for char in map_dict[first]:
-            sub_str = char
-            if remain:
-                for digit in remain:
-                    for c in map_dict[digit]:
-                        res.append(sub_str + c)
-            else:
-                res.append(sub_str)
+        def backtrack(cur_pos, cur_str):
+            if len(cur_str) == len(digits):
+                res.append(cur_str)
+                return 
+            # cur_pos starts at 0
+            for c in map_dict[digits[cur_pos]]:
+                backtrack(cur_pos + 1, cur_str + c)
+        if digits:
+            backtrack(0, "")
+        
         return res
+        
                         
 
 
