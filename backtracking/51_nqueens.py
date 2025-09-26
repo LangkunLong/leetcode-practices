@@ -32,5 +32,6 @@ class Solution:
                 return False
             return True
             
-        
+        start = [["." for _ in range(n)] for _ in range(n)]
+        backtrack(0,start)
         return res
