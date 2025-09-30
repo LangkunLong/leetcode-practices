@@ -29,11 +29,11 @@ class Solution:
                 root.isLeaf = (n == 1)
                 #print(root.val, root.isLeaf)
             else:
-                # need to recurse
-                root.topLeft = form_quad(0, 0, n//2)
-                root.topRight = form_quad(0, n//2, n//2)
-                root.bottomLeft = form_quad(n//2, 0, n//2)
-                root.bottomRight = form_quad(n//2, n//2, n//2)
+                # Double check indexes, make sure to print them 
+                root.topLeft = form_quad(l, w, n//2)
+                root.topRight = form_quad(l, w + n//2, n//2)
+                root.bottomLeft = form_quad(l + n//2, w, n//2)
+                root.bottomRight = form_quad(l + n//2, w + n//2, n//2)
             return root
         
         def check_quad(l, w, n):
