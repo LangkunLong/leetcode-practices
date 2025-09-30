@@ -18,28 +18,33 @@ class Solution:
 
         def form_quad(l, w, n):
             # base case, return None if n is 0
+            print("form_quad called with", l, w, n)
             if n < 1:
                 return None
+            if n == 1:
+                return Node(grid[l][w], True)
             root = Node()
             if check_quad(l, w, n):
                 root.val = (grid[l][w] == 1)
                 root.isLeaf = (n == 1)
-                print(root.val, root.isLeaf)
-                return root
+                #print(root.val, root.isLeaf)
             else:
                 # need to recurse
                 root.topLeft = form_quad(0, 0, n//2)
                 root.topRight = form_quad(0, n//2, n//2)
                 root.bottomLeft = form_quad(n//2, 0, n//2)
                 root.bottomRight = form_quad(n//2, n//2, n//2)
+            return root
         
         def check_quad(l, w, n):
-            sub_grid = 0
-            for r in range(l, n):
-                for c in range(w, n):
-                    sub_grid += grid[r][c]
-            
-            return (sub_grid == 0 or sub_grid == (n ** 2))
+            print("check_quad called with", l, w, n)
+            start = grid[l][w]
+            check = True
+            for r in range(n):
+                for c in range(n):
+                    if grid[l + r][w + c] != start:
+                        check = False
+            print("check_quad:", check)
+            return check
         
         return form_quad(0, 0, len(grid))
-
