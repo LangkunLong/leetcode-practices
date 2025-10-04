@@ -1,7 +1,8 @@
 class Solution:
     def findMin(self, nums: List[int]) -> int:
         # array is rotated left, find min element in logn time
-        # divide and conquer to find left min and right min
+        # binary search problems: need to know what is our search space?
+        # are we searching left of mid, or right of mid?
         res = [nums[0]] # set initial value 
 
         def helper(l,r):
