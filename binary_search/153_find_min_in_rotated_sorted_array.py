@@ -1,17 +1,16 @@
 class Solution:
     def findMin(self, nums: List[int]) -> int:
         # array is rotated left, find min element in logn time
-        # if we find a midpoint where it is larger than its right value, then the next value is start of rotation
-        # if not we keep going left
+        # divide and conquer to find left min and right min
+        res = [nums[0]] # set initial value 
 
         def helper(l,r):
             if l > r:
-                return nums[l]
+                return 
             m = (l + r) // 2
-            if nums[m] > nums[m+1]:
-                return nums[m+1]
-            else:
-                left = helper(l, m-1)
-                return left
+            res[0] = min(res[0], nums[m])
+            l_min = helper(l, m-1)
+            r_min = helper(m+1, r)
         
-        return helper(0, len(nums) - 1)
+        helper(0, len(nums) - 1)
+        return res[0]
