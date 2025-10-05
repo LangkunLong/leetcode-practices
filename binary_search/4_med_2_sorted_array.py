@@ -4,35 +4,29 @@ class Solution:
         # since everything is sorted, we only need to check if max(l1, l2) < min(r1, r2):
         # the biggest left elements picked from num1 and num2 are smaller than the smallest element on the right hand side
 
-        n1, n2 = len(nums1), len(n2)
-        n_side = (n1 + n2 + 1) // 2
-        median = [0]
-        if n1 == n2:
-            helper(nums1, nums2, 0, len(nums1)-1, True)
-        elif n2 > n1:
-            helper(nums1, nums2, 0, len(nums1)-1, False)
-        else:
-            helper(nums2, nums1, 0, len(nums2)-1, False)
-        
-        # here list1 is the list we choose m elements from, list2 we choose (n_side - m) elements
-        def helper(list1, list2, l, r, even):
-            if l > r:
-                return 
-            m1 = (l + r) // 2 # pick m elements from l1
-            m2 = n_side - m1
-            
-            l1 = list1[m1-1] if m1 > 0 else None
-            l2 = list2[m2-1] if m2 > 0 else None
-            r1, r2 = list1[m1], list2[m2]
-            if check(l1, l2, r1, r2):
-                if even:
-                    res[0] = (max(l1,l2) + min(r1, r2)) // 2
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+        n1, n2 = len(nums1), len(nums2)
+        left_side = (n1 + n2 + 1) // 2
+        l, r = 0, n1 - 1
+        while l <= r:
+            m1 = (l + r) // 2
+            m2 = left_side - m1
+            l1 = nums1[m1 - 1] if m1 > 0 else float(-inf)
+            l2 = nums2[m2 - 1] if m2 > 0 else float(-inf)
+            r1 = nums1[m1] if n1 > m1 else float(inf)
+            r2 = nums2[m2] if n2 > m2 else float(inf)
+            if l1 <= r2 and l2 <= r1:
+                if (n1 + n2) % 2 == 0:
+                    return (max(l1, l2) + min(r1, r2)) / 2.0
                 else:
-                    res[0] = max(l1, l2)
+                    return max(l1, l2)
+            elif l1 > r2:
+                r = m1 - 1
             else:
-                if l1 and l2 and l1 > r2:
-                    helper(list1, list2, l, m1 - 1, even)
-                else:
-                    helper(list1, list2, m1 + 1, r, even)
+                l = m1 + 1
+        
+        return 0.0
+
 
                 
