@@ -8,7 +8,7 @@ class Solution:
             nums1, nums2 = nums2, nums1
         n1, n2 = len(nums1), len(nums2)
         left_side = (n1 + n2 + 1) // 2
-        l, r = 0, n1 - 1
+        l, r = 0, n1
         while l <= r:
             m1 = (l + r) // 2
             m2 = left_side - m1
@@ -17,6 +17,7 @@ class Solution:
             r1 = nums1[m1] if n1 > m1 else float(inf)
             r2 = nums2[m2] if n2 > m2 else float(inf)
             if l1 <= r2 and l2 <= r1:
+                print(l1, l2, r1, r2)
                 if (n1 + n2) % 2 == 0:
                     return (max(l1, l2) + min(r1, r2)) / 2.0
                 else:
