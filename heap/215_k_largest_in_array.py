@@ -24,3 +24,6 @@ class Solution:
                 #print(nums[p])
                 return nums[p]
         return partition(0, len(nums)-1)
+
+        # nums.sort()
+        # return nums[len(nums)-k]
