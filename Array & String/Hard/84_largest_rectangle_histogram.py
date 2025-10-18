@@ -6,18 +6,16 @@ class Solution:
         # in the stack, keep track of its height, and maximum starting position
         # extend the starting position by seeing how many elements we pop from the stack (how many are bigger than cur height)
 
-        maxArea = 1
+        maxArea = 0
         stack = []
-        stack.append( (0, heights[0]) )
-        for i in range(1, len(heights)):
-            num_pop = 0
+        for i in range(len(heights)):
+            start = i
             while stack and heights[i] < stack[-1][1]:
-                start, height = stack[-1]
-                curArea = (i - start) * height
-                maxArea = max(maxArea, curArea)
-                stack.pop()
-                num_pop += 1
-            stack.append( (i - num_pop, heights[i]))
+                p_start, p_height = stack.pop()
+                prevArea = (i - p_start) * p_height
+                maxArea = max(maxArea, prevArea)
+                start = p_start # can extend starting index to the popped element's start index, since it is smaller    
+            stack.append( (start, heights[i]))
         
         # if still left over
         while stack:
