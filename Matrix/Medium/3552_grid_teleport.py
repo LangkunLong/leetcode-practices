@@ -25,14 +25,14 @@ class Solution:
             cur_d = dist[r][c]
 
             if r == row -1 and c == col - 1:
-                dist[r][j] = min(dist[r][j], cur_d)
+                return cur_d
             
             # teleport, each portal used once
             if 'A' <= matrix[r][c] <= 'Z' and matrix[r][c] not in used_teleport:
                 for nx, ny in teleport[matrix[r][c]]:
                     if cur_d < dist[nx][ny]:
                         dist[nx][ny] = cur_d
-                        queue.append((nx,ny))
+                        queue.appendleft((nx,ny)) #process 0-cost nodes first
                 used_teleport.add(matrix[r][c])
             
             #print(r,c,cur_d)
@@ -41,12 +41,10 @@ class Solution:
                 #print("options:", nx, ny)
                 if nx in range(row) and ny in range(col) and cur_d + 1 < dist[nx][ny] and matrix[nx][ny] != '#':
                     dist[nx][ny] = cur_d+1
-                    queue.append((nx,ny))
+                    queue.append((nx,ny)) 
                     #print("next move: ", nx, ny, cur_d + 1)
         
-        if dist[row-1][col-1] == float('inf'):
-            return -1
-        else:
-            return dist[row-1][col - 1]
+        return -1
+        
 
         
