@@ -24,8 +24,8 @@ class Solution:
             r, c = queue.popleft()
             cur_d = dist[r][c]
 
-            if r == row -1 and d == col - 1:
-                return cur_d
+            if r == row -1 and c == col - 1:
+                dist[r][j] = min(dist[r][j], cur_d)
             
             # teleport, each portal used once
             if 'A' <= matrix[r][c] <= 'Z' and matrix[r][c] not in used_teleport:
@@ -34,12 +34,19 @@ class Solution:
                         dist[nx][ny] = cur_d
                         queue.append((nx,ny))
                 used_teleport.add(matrix[r][c])
-            else:
-                for dx, dy in dirs:
-                    nx, ny = r+dx, c+dy
-                    if nx in range(row) and ny in range(col) and cur_d + 1 < dist[nx][ny] and matrix[dx][dy] != '#':
-                        dist[nx][ny] = cur_d+1
-                        queue.append((nx,ny))
-        return -1
+            
+            #print(r,c,cur_d)
+            for dx, dy in dirs:
+                nx, ny = r+dx, c+dy
+                #print("options:", nx, ny)
+                if nx in range(row) and ny in range(col) and cur_d + 1 < dist[nx][ny] and matrix[nx][ny] != '#':
+                    dist[nx][ny] = cur_d+1
+                    queue.append((nx,ny))
+                    #print("next move: ", nx, ny, cur_d + 1)
+        
+        if dist[row-1][col-1] == float('inf'):
+            return -1
+        else:
+            return dist[row-1][col - 1]
 
         
