@@ -9,13 +9,13 @@ class Solution:
             for c in range(col):
                 tot_sum = 0
                 num_cell = 0 
-                for i in range(3):
-                    for j in range(3):
+                for i in (-1, 0, 1): # 3x3 filter is just all 8 directions; radius of 1
+                    for j in (-1, 0,1):
                         nx, ny = r+i, c+j
-                        if 0 <= nx <= row - 1 and 0<= ny <= col -1:
+                        if 0 <= nx <= row - 1 and 0 <= ny <= col -1:
                             tot_sum += img[nx][ny]
                             num_cell += 1
                 #print(tot_sum, num_cell)
-                update = tot_sum // 9
+                update = tot_sum // num_cell
                 new_img[r][c] = update
         return new_img
