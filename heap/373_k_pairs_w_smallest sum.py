@@ -6,10 +6,19 @@ class Solution:
         l1, l2 = 0, 0
         res = []
         for i in range(k):
-            if nums1[l1] < nums2[l2]:
+            if l1 < len(nums1) and l2 < len(nums2):
                 res.append([nums1[l1], nums2[l2]])
-                l2 += 1
+                if nums1[l1] < nums2[l2]:
+                    l2 += 1
+                else:
+                    l1 += 1
             else:
-                res.append([nums1[l1], nums2[l2]])
-                l1 += 1
+                if l1 == len(nums1):
+                    l2 += 1
+                    l1 = 0
+                else:
+                    l1 += 1
+                    l2 = 0
+
         return res
+
