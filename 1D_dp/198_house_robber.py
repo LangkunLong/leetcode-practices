@@ -16,5 +16,17 @@ class Solution:
         for i in range(2, len(nums)):
             dp[i] = max(dp[i-1], dp[i-2] + dp[i])
 
-        return dp[-1]       
+        return dp[-1] 
+
+        # O(1) memory approach:
+        # only need to keep track of rob1, rob2, values indicating best 
+        # rob1 is maximum of robbing up until 2 houses before
+        # rob2 is maximum of robbing up until previous house
+        rob1, rob2 = 0, 0
+        # [rob1, rob2, cur (i), i + 1, i+2,...]
+        for num in nums:
+            tmp = max(rob1 + num, rob2)
+            rob1 = rob2
+            rob2 = tmp
+        return rob2
 
