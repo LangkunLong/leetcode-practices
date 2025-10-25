@@ -6,6 +6,7 @@
 class Solution:
     def climbStairs(self, n: int) -> int:
 
+        # explicit approach to help me understand
         mem_dict = dict()
         mem_dict[1] = 1
         mem_dict[2] = 2
@@ -21,5 +22,18 @@ class Solution:
 
         helper(n)
         return mem_dict[n]
+
+        # optimized solution: 
+        # bottom up approach with O(1) memory instead of O(N), we don't need to keep track of entire array
+        # only need previous 2 elements
+        one, two = 1, 1
+        for i in range(n-1):
+            tmp = one
+            one = one + two
+            two = tmp
+
+        return one
+
+            
 
             
