@@ -1,7 +1,5 @@
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
-        class Solution:
-    def search(self, nums: List[int], target: int) -> int:
         # need to determine for each subarray the middle value is in left-sorted, or right-sorted
         l,r = 0, len(nums) - 1
 
