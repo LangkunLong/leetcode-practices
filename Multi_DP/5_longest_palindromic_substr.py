@@ -1,9 +1,9 @@
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        # at each index, base case is starting a substring with that index
-        # at index 2: {start substring with b: 1
-        #              attach to 'a', 'ab' : 0
-        #              attach to 'ba', 'bab': 3}
+        # starting in the middle, and expand to left and right
+        # assume each element is center of palindrome, expand left and right
+        # O(n^2) solution, for each element, check the longest valid palindrome it can form
+        
         longest = ""
         length = 0
         for i in range(len(s)):
